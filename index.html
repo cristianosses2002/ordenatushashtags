@@ -1,0 +1,976 @@
+<html><head><base href="https://example.com">
+  <meta charset="UTF-8">
+  <title>Ordena Tus Hashtags</title>
+  <meta name="description" content="Ordena y gestiona tus hashtags de manera eficiente con nuestra herramienta interactiva. Genera, copia, descarga y personaliza tus hashtags fácilmente.">
+  <meta name="keywords" content="hashtags, ordenar, copiar, descargar, tool, generador de hashtags, gestión de hashtags">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="copyright" content="© 2023 CristianOsses. All rights reserved.">
+  <style>
+    :root {
+      --primary-color: #48f;
+      --secondary-color: #f06;
+      --background-start: linear-gradient(135deg, #f6f9fc, #e0e7ff);
+      --background-end: linear-gradient(135deg, #e0e7ff, #f6f9fc);
+      --text-color: #333;
+      --button-bg: #fff;
+      --button-text: #48f;
+      --button-hover-bg: #e0e0e0;
+      --hashtag-bg: rgba(0, 0, 0, 0.1);
+      --hashtag-hover-bg: rgba(0, 0, 0, 0.15);
+      --toast-bg: rgba(0, 0, 0, 0.8);
+      --toast-text: #fff;
+      --input-bg: #fff;
+      --input-text: #333;
+      --border-radius: 5px;
+      --transition-speed: 0.3s;
+      --max-width: 500px;
+    }
+
+    [data-theme="dark"] {
+      --background-start: linear-gradient(135deg, #2c3e50, #4ca1af);
+      --background-end: linear-gradient(135deg, #4ca1af, #2c3e50);
+      --text-color: #ecf0f1;
+      --button-bg: #34495e;
+      --button-text: #ecf0f1;
+      --button-hover-bg: #2c3e50;
+      --hashtag-bg: rgba(255, 255, 255, 0.1);
+      --hashtag-hover-bg: rgba(255, 255, 255, 0.15);
+      --toast-bg: rgba(255, 255, 255, 0.8);
+      --toast-text: #333;
+      --input-bg: #34495e;
+      --input-text: #ecf0f1;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--background-start);
+      background-size: 400% 400%;
+      animation: backgroundAnimation 15s ease infinite;
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      transition: background 0.5s, color 0.5s;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @keyframes backgroundAnimation {
+      0% { background: var(--background-start); }
+      50% { background: var(--background-end); }
+      100% { background: var(--background-start); }
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .theme-toggle input {
+      display: none;
+    }
+
+    .slider {
+      width: 50px;
+      height: 25px;
+      background-color: #ccc;
+      border-radius: 25px;
+      position: relative;
+      transition: background-color var(--transition-speed);
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 21px;
+      height: 21px;
+      background-color: #fff;
+      border-radius: 50%;
+      transition: transform var(--transition-speed);
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary-color);
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(25px);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      animation: fadeInDown 1s ease-out;
+      text-align: center;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      max-width: var(--max-width);
+    }
+
+    input, textarea, select {
+      padding: 10px;
+      width: 100%;
+      max-width: 100%;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 1em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      resize: vertical;
+      min-height: 40px;
+      box-sizing: border-box;
+      background-color: var(--input-bg);
+      color: var(--input-text);
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      transform: scale(1.02);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      type: button;
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--border-radius);
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color var(--transition-speed), transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+    }
+
+    button:hover {
+      background-color: var(--button-hover-bg);
+      transform: scale(1.05);
+    }
+
+    .hashtags {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+      max-width: var(--max-width);
+    }
+
+    .hashtag {
+      background-color: var(--hashtag-bg);
+      padding: 10px 15px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9em;
+    }
+
+    .hashtag:hover {
+      transform: scale(1.1);
+      background-color: var(--hashtag-hover-bg);
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--primary-color);
+      transition: fill 0.3s;
+    }
+
+    .hashtag:hover svg,
+    .copy-result-btn:hover svg,
+    .reset-btn:hover svg,
+    .share-btn:hover svg {
+      fill: var(--button-text);
+    }
+
+    /* Toast styles */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .toast {
+      background-color: var(--toast-bg);
+      color: var(--toast-text);
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      margin-top: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+      font-size: 0.9em;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Tooltip Styles */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 160px;
+      background-color: var(--toast-bg);
+      color: var(--toast-text);
+      text-align: center;
+      border-radius: var(--border-radius);
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -80px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8em;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      input, textarea, select {
+        width: 90%;
+      }
+
+      .button-group {
+        flex-direction: column;
+        width: 90%;
+      }
+
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* History Styles */
+    .history-container {
+      margin-top: 20px;
+      width: 100%;
+      max-width: var(--max-width);
+    }
+
+    .history-container h2 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .history-list {
+      list-style: none;
+      padding: 0;
+      max-height: 150px;
+      overflow-y: auto;
+      background-color: var(--hashtag-bg);
+      border-radius: var(--border-radius);
+      padding: 10px;
+    }
+
+    .history-item {
+      padding: 5px 0;
+      border-bottom: 1px solid #ccc;
+      font-size: 0.9em;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Counter Styles */
+    .counter {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: var(--text-color);
+    }
+
+    /* Footer Styles */
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: var(--text-color);
+      text-align: center;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUpFooter {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      animation: fadeInUpFooter 1s ease-out forwards;
+    }
+
+    /* Share Modal Styles */
+    .share-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .share-modal-content {
+      background: var(--input-bg);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      max-width: 300px;
+      width: 90%;
+    }
+    .share-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .share-platform {
+      flex: 1;
+      padding: 10px;
+      margin: 5px;
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .share-platform:hover {
+      transform: scale(1.05);
+    }
+    .close-share-modal {
+      margin-top: 15px;
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    /* Prevent text selection */
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Disable context menu */
+    body {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+  </style>
+  </head><body><header>
+    <div class="theme-toggle" role="switch" aria-checked="false" aria-label="Alternar modo claro y oscuro">
+      <input type="checkbox" id="themeSwitch" aria-label="Alternar modo claro y oscuro">
+      <label for="themeSwitch" class="slider" role="slider" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"></label>
+    </div>
+  </header>
+  <h1>
+  <style>
+    .typing-effect {
+      position: relative;
+      display: inline-block;
+    }
+    .typing-effect::after {
+      content: '|';
+      position: absolute;
+      right: -10px;
+      animation: blink 0.7s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    .typing-text {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: 
+        typewriter 2.5s steps(20) forwards,
+        fadeInDown 1s ease-out;
+      width: 0;
+    }
+  </style>
+  <span class="typing-effect">
+    <span class="typing-text" style="animation: typewriter 2.5s steps(20) forwards;">
+      Ordena tus Hashtags
+    </span>
+    <style>
+      .typing-text::after {
+        content: '|';
+        position: absolute;
+        right: -10px;
+        animation: blink 0.7s infinite;
+        opacity: 0.3;
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 0.6; }
+      }
+    </style>
+</span>
+</h1>
+  <div class="input-container">
+    <input type="text" id="namesInput" placeholder="Ingresa nombres separados por comas" aria-label="Entrada para nombres separados por comas">
+    <div class="button-group">
+      <button id="generateBtn" class="tooltip" aria-label="Generar hashtags" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14zM12 12l-4 4h3v4h2v-4h3l-4-4z"></path>
+        </svg>
+        Generar
+        <span class="tooltiptext">Genera hashtags a partir de los nombres ingresados</span>
+      </button>
+      <button id="copyHashtagsBtn" class="tooltip copy-result-btn" aria-label="Copiar hashtags generados" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14zM12 12l-4 4h3v4h2v-4h3l-4-4z"></path>
+        </svg>
+        Copiar Hashtags
+        <span class="tooltiptext">Copia los hashtags generados al portapapeles</span>
+      </button>
+      <button id="resetBtn" class="tooltip reset-btn" aria-label="Reiniciar todos los campos" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"></path>
+        </svg>
+        Reiniciar
+        <span class="tooltiptext">Limpia todos los campos y resultados</span>
+      </button>
+    </div>
+    <select id="separatorSelect" aria-label="Seleccionar separador">
+      <option value=",">Coma (,)</option>
+      <option value=";">Punto y coma (;)</option>
+      <option value="|">Barra vertical (|)</option>
+      <option value=">">Mayor que (&gt;)</option>
+    </select>
+    <div class="button-group">
+      <button id="shareBtn" class="tooltip share-btn" aria-label="Compartir hashtags en redes sociales">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.02-4.11c.54.5 1.25.81 2.02.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .23.03.45.09.67L8.07 9.58C7.54 9.08 6.83 8.77 6.07 8.77c-1.66 0-3 1.34-3 3s1.34 3 3 3c.76 0 1.47-.31 1.99-.8l7.12 4.16c-.06.22-.09.44-.09.67 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"></path>
+    </svg>
+    Compartir redes
+    <span class="tooltiptext">Comparte tus hashtags en diferentes plataformas sociales</span>
+</button>
+      <button id="copyProcessedTextBtn" class="tooltip copy-result-btn" aria-label="Copiar texto procesado" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14zM12 12l-4 4h3v4h2v-4h3l-4-4z"></path>
+        </svg>
+        Copiar Texto Procesado
+        <span class="tooltiptext">Copia el texto con separadores al portapapeles</span>
+      </button>
+    </div>
+    <textarea id="textInput" placeholder="Ingresa tu texto aquí" aria-label="Área de texto para ingresar texto"></textarea>
+    <textarea id="resultOutput" placeholder="Resultado con separador agregado" readonly="" aria-label="Área de texto para mostrar resultados procesados"></textarea>
+    <div class="counter" aria-live="polite"></div>
+  </div>
+  <div class="hashtags" id="hashtagsContainer" aria-live="polite"></div>
+  <div class="history-container">
+    <h2>Historial de Acciones</h2>
+    <ul class="history-list" id="historyList" aria-live="polite"></ul>
+  </div>
+  <div class="toast-container" id="toastContainer" aria-live="assertive"></div>
+  <footer>
+    <p>Creador: CristianOsses</p>
+  </footer>
+  <script>
+    // Theme Toggle
+    const themeSwitch = document.getElementById('themeSwitch');
+    const body = document.body;
+    const themeToggleLabel = document.querySelector('.theme-toggle label');
+
+    themeSwitch.addEventListener('change', () => {
+      const isDark = themeSwitch.checked;
+      body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      themeToggleLabel.setAttribute('aria-valuenow', isDark ? '1' : '0');
+      addToHistory(`Modo ${isDark ? 'oscuro' : 'claro'} activado`);
+    });
+
+    // Element References
+    const generateBtn = document.getElementById('generateBtn');
+    const namesInput = document.getElementById('namesInput');
+    const hashtagsContainer = document.getElementById('hashtagsContainer');
+    const textInput = document.getElementById('textInput');
+    const resultOutput = document.getElementById('resultOutput');
+    const resetBtn = document.getElementById('resetBtn');
+    const separatorSelect = document.getElementById('separatorSelect');
+    const shareBtn = document.getElementById('shareBtn');
+    const historyList = document.getElementById('historyList');
+    const toastContainer = document.getElementById('toastContainer');
+    const counter = document.querySelector('.counter');
+    const copyHashtagsBtn = document.getElementById('copyHashtagsBtn');
+    const copyProcessedTextBtn = document.getElementById('copyProcessedTextBtn');
+
+    let historyActions = [];
+
+    // Utility Functions
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      toast.addEventListener('animationend', () => {
+        toast.remove();
+      });
+      addToHistory(message);
+    }
+
+    function addToHistory(action) {
+      if (historyActions.length >= 10) {
+        historyActions.shift();
+      }
+      historyActions.push(action);
+      renderHistory();
+    }
+
+    function renderHistory() {
+      historyList.innerHTML = '';
+      historyActions.slice().reverse().forEach(action => {
+        const li = document.createElement('li');
+        li.className = 'history-item';
+        li.textContent = action;
+        historyList.appendChild(li);
+      });
+    }
+
+    function validateInput(input) {
+      return input.trim() !== '';
+    }
+
+    // Hashtag Generation
+    generateBtn.addEventListener('click', () => {
+      const input = namesInput.value;
+      if (!validateInput(input)) {
+        showToast('No se ingresaron nombres para generar hashtags.');
+        return;
+      }
+      const names = input.split(',').map(name => name.trim()).filter(name => name !== '');
+      names.sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+      hashtagsContainer.innerHTML = '';
+      names.forEach(name => {
+        const sanitizedName = name.replace(/\s+/g, '');
+        const hashtagText = `#${sanitizedName}`;
+        const hashtagDiv = document.createElement('div');
+        hashtagDiv.className = 'hashtag';
+        hashtagDiv.textContent = hashtagText;
+
+        hashtagDiv.addEventListener('click', () => {
+          copyToClipboard(hashtagText).then(() => {
+            showToast(`Hashtag copiado: ${hashtagText}`);
+          }).catch(() => {
+            showToast('Error al copiar el hashtag.');
+          });
+        });
+
+        hashtagsContainer.appendChild(hashtagDiv);
+      });
+      showToast('Hashtags generados.');
+    });
+
+    // Copy to Clipboard with fallback
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      } else {
+        return fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      return new Promise((resolve, reject) => {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '-1000px';
+        textArea.style.left = '-1000px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) {
+            resolve();
+          } else {
+            reject();
+          }
+        } catch (err) {
+          reject();
+        }
+        document.body.removeChild(textArea);
+      });
+    }
+
+    // Copy Generated Hashtags
+    copyHashtagsBtn.addEventListener('click', () => {
+      const hashtags = Array.from(hashtagsContainer.children)
+        .map(div => div.textContent)
+        .filter(text => text.trim() !== '');
+
+      if (hashtags.length === 0) {
+        showToast('No hay hashtags para copiar.');
+        return;
+      }
+
+      const hashtagsText = hashtags.join('\n');
+      
+      // Copy to clipboard
+      copyToClipboard(hashtagsText).then(() => {
+        showToast('Hashtags copiados al portapapeles');
+        addToHistory('Hashtags copiados');
+      }).catch(() => {
+        showToast('Error al copiar los hashtags');
+      });
+    });
+
+    // Copy Processed Text
+    copyProcessedTextBtn.addEventListener('click', () => {
+      const processedText = resultOutput.value.trim();
+
+      if (!processedText) {
+        showToast('No hay texto procesado para copiar.');
+        return;
+      }
+
+      copyToClipboard(processedText).then(() => {
+        showToast('Texto procesado copiado al portapapeles');
+        addToHistory('Texto procesado copiado');
+      }).catch(() => {
+        showToast('Error al copiar el texto procesado');
+      });
+    });
+
+    // Automatically add separators on change
+    separatorSelect.addEventListener('change', () => {
+      const inputText = textInput.value;
+      if (validateInput(inputText)) {
+        const separator = separatorSelect.value;
+        const lines = inputText.split('\n');
+        const processedLines = lines.map(line => `${separator}${line.trim()}`);
+        const resultText = processedLines.join('\n');
+        resultOutput.value = resultText;
+        showToast('Separadores actualizados automáticamente.');
+      }
+    });
+
+    // Reset Functionality
+    resetBtn.addEventListener('click', () => {
+      namesInput.value = '';
+      textInput.value = '';
+      resultOutput.value = '';
+      hashtagsContainer.innerHTML = '';
+      counter.textContent = '';
+      showToast('Todos los campos han sido reiniciados.');
+    });
+
+    // Character and Line Counters
+    namesInput.addEventListener('input', updateCounter);
+    textInput.addEventListener('input', updateCounter);
+    
+    function updateCounter() {
+      const namesCount = namesInput.value.split(',').filter(name => name.trim() !== '').length;
+      const linesCount = textInput.value.split('\n').filter(line => line.trim() !== '').length;
+      counter.textContent = `Nombres: ${namesCount} | Líneas: ${linesCount}`;
+    }
+    
+    // Initial Counter Update
+    updateCounter();
+
+    // Share functionality for hashtags
+    shareBtn.addEventListener('click', () => {
+      const hashtags = Array.from(hashtagsContainer.children)
+        .map(div => div.textContent)
+        .filter(text => text.trim() !== '');
+
+      if (hashtags.length === 0) {
+        showToast('No hay hashtags para compartir.');
+        return;
+      }
+
+      const hashtagsText = hashtags.join(' ');
+
+      // Enhanced sharing options
+      const shareOptions = {
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(hashtagsText)}`,
+        twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(hashtagsText)}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(hashtagsText)}`,
+        telegram: `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(hashtagsText)}`
+      };
+
+      // Create a modal for sharing options
+      const shareModal = document.createElement('div');
+      shareModal.innerHTML = `
+        <div class="share-modal">
+          <div class="share-modal-content">
+            <h2>Compartir Hashtags</h2>
+            <div class="share-buttons">
+              <button class="share-platform" data-platform="whatsapp">WhatsApp</button>
+              <button class="share-platform" data-platform="twitter">Twitter</button>
+              <button class="share-platform" data-platform="facebook">Facebook</button>
+              <button class="share-platform" data-platform="telegram">Telegram</button>
+            </div>
+            <button class="close-share-modal">Cancelar</button>
+          </div>
+        </div>
+      `;
+
+      // Add styles for the share modal
+      const shareModalStyle = document.createElement('style');
+      shareModalStyle.textContent = `
+        .share-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        }
+        .share-modal-content {
+          background: var(--input-bg);
+          padding: 20px;
+          border-radius: var(--border-radius);
+          text-align: center;
+          max-width: 300px;
+          width: 90%;
+        }
+        .share-buttons {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          justify-content: center;
+          margin-top: 15px;
+        }
+        .share-platform {
+          flex: 1;
+          padding: 10px;
+          margin: 5px;
+          background-color: var(--button-bg);
+          color: var(--button-text);
+          border: none;
+          border-radius: var(--border-radius);
+          cursor: pointer;
+          transition: transform 0.2s;
+        }
+        .share-platform:hover {
+          transform: scale(1.05);
+        }
+        .close-share-modal {
+          margin-top: 15px;
+          background-color: var(--secondary-color);
+          color: white;
+        }
+      `;
+
+      document.body.appendChild(shareModalStyle);
+      document.body.appendChild(shareModal);
+
+      // Add event listeners to share buttons
+      shareModal.querySelectorAll('.share-platform').forEach(button => {
+        button.addEventListener('click', () => {
+          const platform = button.dataset.platform;
+          const shareUrl = shareOptions[platform];
+          
+          if (shareUrl) {
+            window.open(shareUrl, '_blank');
+            showToast(`Compartiendo en ${platform}`);
+          }
+          
+          document.body.removeChild(shareModal);
+          document.body.removeChild(shareModalStyle);
+        });
+      });
+
+      // Close modal button
+      shareModal.querySelector('.close-share-modal').addEventListener('click', () => {
+        document.body.removeChild(shareModal);
+        document.body.removeChild(shareModalStyle);
+      });
+
+      // Add to history
+      addToHistory('Abierto menú de compartir hashtags');
+    });
+
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      showToast('Copiar contenido no está permitido.');
+    });
+
+    // Disable keyboard shortcuts for copying and saving
+    document.addEventListener('keydown', function(e) {
+      // Prevent Ctrl+C, Ctrl+X, Ctrl+S, Ctrl+Shift+I, F12
+      if ((e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 's')) || 
+          (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+          e.key === 'F12') {
+        e.preventDefault();
+        showToast('Esta acción no está permitida.');
+      }
+    });
+
+    // Secure Console Implementation
+    (function() {
+        // Store original console methods
+        const originalConsole = { ...console };
+
+        // Custom console wrapper
+        const secureConsole = {
+            log: function() {},
+            warn: function() {},
+            error: function() {},
+            info: function() {},
+            debug: function() {},
+            trace: function() {}
+        };
+
+        // Attempt to replace console with a less intrusive method
+        try {
+            Object.defineProperty(window, 'console', {
+                get: function() {
+                    return secureConsole;
+                },
+                set: function() {} // Prevent overwriting
+            });
+        } catch (e) {
+            originalConsole.error('Could not fully secure console');
+        }
+
+        // Developer tools detection
+        const detectDevTools = {
+            isOpen: false,
+            threshold: 200,
+            init: function() {
+                const startTime = Date.now();
+                
+                console.log.apply(console, [
+                    '%c ',
+                    'padding: 50px; background: url(https://example.com/blank.gif) no-repeat; color: transparent;'
+                ]);
+
+                this.isOpen = Date.now() - startTime > this.threshold;
+
+                if (this.isOpen) {
+                    window.location.reload();
+                }
+            }
+        };
+
+        // Run detection periodically
+        setInterval(detectDevTools.init.bind(detectDevTools), 1000);
+
+        // Additional protection against developer tools
+        window.addEventListener('devtoolschange', function(e) {
+            if (e.detail.isOpen) {
+                window.location.reload();
+            }
+        });
+    })();
+
+    // Prevent text selection across the entire document
+    document.addEventListener('selectstart', function(e) {
+      e.preventDefault();
+    });
+
+    // Prevent copying
+    document.addEventListener('copy', function(e) {
+      e.preventDefault();
+      showToast('Copiar contenido no está permitido.');
+    });
+
+    // Prevent cutting
+    document.addEventListener('cut', function(e) {
+      e.preventDefault();
+      showToast('Cortar contenido no está permitido.');
+    });
+  </script>
+</body></html>
